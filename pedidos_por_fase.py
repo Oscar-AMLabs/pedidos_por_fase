@@ -1,18 +1,27 @@
-from flask import Flask, render_template, redirect, url_for
 import requests
 import pandas as pd
 import plotly.graph_objects as go
-from datetime import datetime, timedelta
 import boto3
+import os
+
 from io import BytesIO
+from flask import Flask, render_template, redirect, url_for
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
 # Configurações do AWS S3
 bucket_name = 'pedidos-por-fase-healthcheck'
 s3_file_name = 'Relatório analitico por Fase (Novo BI).xlsx'
-aws_access_key = 'AKIAY3FXBCBLGZUCVX4O'
-aws_secret_key = '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'
+
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
+
+aws_access_key = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+s3 = boto3.client('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
 
 def load_excel_from_s3(bucket, key):
     s3 = boto3.client('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
