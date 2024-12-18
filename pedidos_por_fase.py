@@ -3,14 +3,25 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
+import boto3
+from io import BytesIO
 
 app = Flask(__name__)
 
-# Load the Excel file
-file_path = r'C:/Users/Oscar Rodriguez/OneDrive - AMLabs/Documentos Compartilhados - AMLabs/Gráficos/EXCEL/GERAL/Relatório por Fases/Relatório analitico por Fase (Novo BI).xlsx'
-df = pd.read_excel(file_path, sheet_name='Dados')
+# Configurações do AWS S3
+bucket_name = 'pedidos-por-fase-healthcheck'
+s3_file_name = 'Relatório analitico por Fase (Novo BI).xlsx'
+aws_access_key = 'AKIAY3FXBCBLGZUCVX4O'
+aws_secret_key = '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'
 
-# Display the first few rows of the dataframe to understand its structure
+def load_excel_from_s3(bucket, key):
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key)
+    response = s3.get_object(Bucket=bucket, Key=key)
+    file_stream = response['Body']
+    return pd.read_excel(BytesIO(file_stream.read()), sheet_name='Dados')
+
+df = load_excel_from_s3(bucket_name, s3_file_name)
+
 print(df.head())
 
 # Dictionary to store phase IDs for each pipe
@@ -177,8 +188,6 @@ def pedidos_por_fase():
     
     graficos = {}
     
-    # Load data from Excel file
-    df = pd.read_excel(file_path, sheet_name='Dados')
     
     for titulo, pipe_id in pipe_ids.items():
 
