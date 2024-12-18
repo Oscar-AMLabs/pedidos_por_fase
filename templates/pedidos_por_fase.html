@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos por fase</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+            background-color: #f4f4f4;
+            background-image: url('{{ url_for('static', filename='images/background.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            width: 90%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            flex-grow: 1;
+            overflow-x: auto; /* Adicionado para permitir rolagem horizontal */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .tab:hover {
+            background-color: #0056b3;
+        }
+        .tab.active {
+            background-color: #990248;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .logo {
+            position: static;
+            top: 20px;
+            left: 100px;
+            width: 150px;
+        }
+        .grafico-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Ensure space between graphs */
+        }
+        .grafico {
+            flex: 0 0 48%; /* Adjust the width of the graphs to 48% to allow two graphs side by side with some space between */
+            margin: 10px 0; /* Add vertical margin to separate rows */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .grafico-full {
+            flex: 1 1 50%;
+            width: 100%; 
+            height: 80vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; 
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px; 
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .grafico-full > div {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove the active class from all tabs
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show the current tab and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Open the default tab
+        document.addEventListener("DOMContentLoaded", function() {
+          document.getElementById("defaultTab").click();
+        });
+    </script>
+</head>
+<body> 
+    <img src="{{ url_for('static', filename='images/amlabs_logo.jpg') }}" alt="Company Logo" class="logo">
+    <div class="container">
+        
+        <h1>Dashboard de Pedidos</h1>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <div class="tab active" id="defaultTab" onclick="openTab(event, 'main')">Pedidos por Fase</div>
+          <div class="tab" onclick="openTab(event, 'rota')">Em Rota de Entrega</div>
+        </div>
+
+        <!-- Tab content -->
+        <div id="main" class="tab-content active">
+          <!-- Container para os gráficos lado a lado -->
+          <div class="grafico-container">            
+              {% for titulo, grafico in graficos.items() %}
+                  <div class="grafico">
+                      <h2>{{ titulo }}</h2>
+                      {{ grafico|safe }}
+                  </div>
+              {% endfor %}
+          </div>
+        </div>
+
+        <div id="rota" class="tab-content">
+          <!-- Container para o gráfico completo -->
+           <div class = 
+          <div class="grafico-full">
+              <div>
+                  <h2>Quantidade de Pedidos - Em Rota de Entrega (E02 - Produção)</h2>
+                  {{ grafico_rota_entrega|safe }}
+              </div>
+          </div>
+        </div>
+
+    </div>
+</body>
+</html>
