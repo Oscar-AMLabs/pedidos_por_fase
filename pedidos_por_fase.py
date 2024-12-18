@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 # Load the Excel file
-file_path = r'C:/Users/Oscar Rodriguez/OneDrive - AMLabs/pedidos_por_fase/Relatório analitico por Fase (Teste).xlsx'
+file_path = r'C:/Users/Oscar Rodriguez/OneDrive - AMLabs/Documentos Compartilhados - AMLabs/Gráficos/EXCEL/GERAL/Relatório por Fases/Relatório analitico por Fase (Novo BI).xlsx'
 df = pd.read_excel(file_path, sheet_name='Dados')
 
 # Display the first few rows of the dataframe to understand its structure

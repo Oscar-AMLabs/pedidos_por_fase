@@ -82,7 +82,7 @@
             box-sizing: border-box;
         }
         .grafico-full {
-            flex: 1 1 50%;
+            flex: 0 0 100%;
             width: 100%; 
             height: 80vh; 
             display: flex;
@@ -98,6 +98,22 @@
         .grafico-full > div {
             width: 100%;
             height: 100%;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: #fcfbfb;
+            background-color: #7c0b56;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            align-self: center;
+        }
+        .button:hover {
+            background-color: #0056b3;
         }
     </style>
     <script>
@@ -127,18 +143,21 @@
         document.addEventListener("DOMContentLoaded", function() {
           document.getElementById("defaultTab").click();
         });
+
+        function refreshPage() {
+            window.location.reload();
+        }
     </script>
 </head>
 <body> 
     <img src="{{ url_for('static', filename='images/amlabs_logo.jpg') }}" alt="Company Logo" class="logo">
     <div class="container">
-        
         <h1>Dashboard de Pedidos</h1>
-
         <!-- Tabs -->
         <div class="tabs">
           <div class="tab active" id="defaultTab" onclick="openTab(event, 'main')">Pedidos por Fase</div>
           <div class="tab" onclick="openTab(event, 'rota')">Em Rota de Entrega</div>
+          
         </div>
 
         <!-- Tab content -->
@@ -152,19 +171,19 @@
                   </div>
               {% endfor %}
           </div>
+          <button class="button" onclick="refreshPage()">Refresh</button>
         </div>
 
         <div id="rota" class="tab-content">
-          <!-- Container para o gráfico completo -->
-           <div class = 
           <div class="grafico-full">
               <div>
                   <h2>Quantidade de Pedidos - Em Rota de Entrega (E02 - Produção)</h2>
                   {{ grafico_rota_entrega|safe }}
               </div>
           </div>
+          <button class="button" onclick="refreshPage()">Refresh</button>
         </div>
-
+        <a href="https://problemas-fases.onrender.com/" class="button">Problemas por Fase</a>
     </div>
 </body>
 </html>
