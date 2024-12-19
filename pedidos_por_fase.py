@@ -197,6 +197,8 @@ def pedidos_por_fase():
     
     graficos = {}
     
+    # Load data from Excel file
+    df = pd.read_excel(file_path, sheet_name='Dados')
     
     for titulo, pipe_id in pipe_ids.items():
 
